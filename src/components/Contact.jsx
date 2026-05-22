@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Mail, MapPin, Building, FileText, Send, CheckCircle } from 'lucide-react';
 
 // Google Apps Script Web App URL for Sheet + Email integration (see public/google_sheets_setup.txt)
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyXajXI2gfswoeuaChWZo0XDDHXIt1Pe9QIyJIJmU3leFj2kIMeqzhj1kt_Yjmifu5x/exec';
+const GOOGLE_SCRIPT_URL = import.meta.env.VITE_GOOGLE_SCRIPT_URL || '';
 
 export default function Contact() {
   const [formState, setFormState] = useState({

@@ -82,3 +82,40 @@ npm run preview
 1. **LCP Hero Optimization**: The hero background has a high fetch priority (`fetchPriority="high"`) and preload cues to optimize Core Web Vitals.
 2. **Lazy Loading**: Secondary images and maps use native browser lazy loading (`loading="lazy"`) and explicit dimensions to avoid layout shifts.
 3. **PWA & Search**: Fully compliant with crawlable sitemaps, robots configurations, and app manifests.
+
+---
+
+## ☁️ Cloudflare Pages Deployment
+
+You can deploy this site to Cloudflare Pages using one of two methods:
+
+### Method A: Git Integration (Recommended)
+This automatically redeploys your site every time you push changes to GitHub.
+
+1. Go to the **Cloudflare Dashboard** -> **Workers & Pages** -> **Create application** -> **Pages** -> **Connect to Git**.
+2. Select your repository `abhinavRai23/henrise-agro-farm`.
+3. Set the build configuration:
+   - **Framework preset**: `Vite`
+   - **Build command**: `npm run build`
+   - **Build output directory**: `dist`
+4. **Important**: Add the Environment Variable so it is available during Cloudflare's build process:
+   - Under **Environment variables (advanced)**, click **Add variable**.
+   - **Name**: `VITE_GOOGLE_SCRIPT_URL`
+   - **Value**: `https://script.google.com/macros/s/AKfycbyXajXI2gfswoeuaChWZo0XDDHXIt1Pe9QIyJIJmU3leFj2kIMeqzhj1kt_Yjmifu5x/exec`
+5. Click **Save and Deploy**.
+
+---
+
+### Method B: Wrangler CLI (Manual Upload)
+If you prefer to compile locally and upload directly from your terminal:
+
+1. Build the production assets locally. Vite will read the `VITE_GOOGLE_SCRIPT_URL` from your local `.env` file and compile it into the bundle:
+   ```bash
+   npm run build
+   ```
+2. Deploy the compiled `dist` directory to Cloudflare Pages using `wrangler`:
+   ```bash
+   npx wrangler pages deploy dist --project-name=henrise-agro-farm
+   ```
+   *(If it's your first time, Wrangler will guide you through authenticating your Cloudflare account.)*
+
