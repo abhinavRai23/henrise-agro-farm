@@ -1,0 +1,105 @@
+========================================================================
+HENRISE AGRO FARM - GOOGLE SHEET & EMAIL INQUIRY INTEGRATION GUIDE
+========================================================================
+
+Follow these simple steps to connect the "Contact Us" form to a Google Sheet
+and receive automated email notifications whenever a B2B inquiry is submitted.
+
+STEP 1: CREATE A GOOGLE SHEET
+------------------------------------------------------------------------
+1. Go to Google Sheets (https://sheets.google.com) and create a Blank Spreadsheet.
+2. Rename the spreadsheet to: "Henrise Agro Farm B2B Inquiries".
+3. In the first row, add the following column headers (A1 to F1):
+   A1: Date/Time
+   B1: Contact Person Name
+   C1: Shop/Business Name
+   D1: Mobile Number
+   E1: Primary Requirement
+   F1: Requirement Details / Message
+
+STEP 2: OPEN APPS SCRIPT
+------------------------------------------------------------------------
+1. In the Google Sheets menu, click on "Extensions" -> "Apps Script".
+2. Delete any default code in the editor (e.g., myFunction).
+3. Copy and paste the script below into the code editor:
+
+-----------------------[ PASTE SCRIPT BELOW ]-----------------------
+function doPost(e) {
+  // Add CORS headers support for response
+  var headers = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type"
+  };
+
+  // Handle preflight OPTIONS request
+  if (e.postData === undefined) {
+    return ContentService.createTextOutput(JSON.stringify({ "result": "preflight" }))
+                         .setMimeType(ContentService.MimeType.JSON)
+                         .setHeaders(headers);
+  }
+
+  try {
+    var data = JSON.parse(e.postData.contents);
+    
+    // 1. Write to Google Sheet
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    sheet.appendRow([
+      new Date(),
+      data.name,
+      data.shopName,
+      data.phone,
+      data.requirement,
+      data.message
+    ]);
+    
+    // 2. Send email notification
+    var emailSubject = "New B2B Inquiry: " + data.shopName;
+    var emailBody = "You have received a new B2B wholesale inquiry from Henrise Agro Farm Portal:\n\n" +
+                    "Contact Name: " + data.name + "\n" +
+                    "Shop Name: " + data.shopName + "\n" +
+                    "Mobile Number: " + data.phone + "\n" +
+                    "Requirement: " + data.requirement + "\n" +
+                    "Details:\n" + data.message + "\n\n" +
+                    "Date of Inquiry: " + new Date().toLocaleString();
+                    
+    MailApp.sendEmail("henriseagrofarm@gmail.com", emailSubject, emailBody);
+    
+    return ContentService.createTextOutput(JSON.stringify({ "result": "success" }))
+                         .setMimeType(ContentService.MimeType.JSON)
+                         .setHeaders(headers);
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({ "result": "error", "error": error.toString() }))
+                         .setMimeType(ContentService.MimeType.JSON)
+                         .setHeaders(headers);
+  }
+}
+
+// Handle GET requests (optional, for testing)
+function doGet() {
+  return ContentService.createTextOutput(JSON.stringify({ "status": "running" }))
+                       .setMimeType(ContentService.MimeType.JSON);
+}
+-----------------------[ END OF SCRIPT ]-----------------------
+
+STEP 3: DEPLOY THE SCRIPT AS A WEB APP
+------------------------------------------------------------------------
+1. In the Apps Script project editor, click the blue "Deploy" button at the top-right and select "New deployment".
+2. Click the gear icon next to "Select type" and choose "Web app".
+3. Configure the deployment settings:
+   - Description: "Henrise B2B Form Web App"
+   - Execute as: "Me" (your Google account)
+   - Who has access: "Anyone" (This is crucial to allow form submissions from the website)
+4. Click the "Deploy" button.
+5. Google will prompt you to "Authorize Access". Click "Authorize Access", select your Google account, click "Advanced", and then click "Go to Untitled project (unsafe)" / "Go to Henrise B2B Form (unsafe)".
+6. Grant the required permissions.
+7. Once successfully deployed, copy the "Web app URL" provided in the dialog. It should look like this:
+   https://script.google.com/macros/s/AKfycb.../exec
+
+STEP 4: UPDATE THE WEBSITE CODE
+------------------------------------------------------------------------P
+1. Open the file `src/components/Contact.jsx`.
+2. Locate the line at the top:
+   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/.../exec';
+3. Replace the placeholder string with your copied "Web app URL".
+4. Save the file. Vite will hot-reload the changes, and your form is now live!
