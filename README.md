@@ -104,18 +104,3 @@ This automatically redeploys your site every time you push changes to GitHub.
    - **Value**: `https://script.google.com/macros/s/AKfycbyXajXI2gfswoeuaChWZo0XDDHXIt1Pe9QIyJIJmU3leFj2kIMeqzhj1kt_Yjmifu5x/exec`
 5. Click **Save and Deploy**.
 
----
-
-### Method B: Wrangler CLI (Manual Upload)
-If you prefer to compile locally and upload directly from your terminal:
-
-1. Build the production assets locally. Vite will read the `VITE_GOOGLE_SCRIPT_URL` from your local `.env` file and compile it into the bundle:
-   ```bash
-   npm run build
-   ```
-2. Deploy the compiled `dist` directory to Cloudflare Pages using `wrangler`:
-   ```bash
-   npx wrangler pages deploy dist --project-name=henrise-agro-farm
-   ```
-   *(If it's your first time, Wrangler will guide you through authenticating your Cloudflare account.)*
-
