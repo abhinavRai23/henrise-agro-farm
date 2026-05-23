@@ -25,18 +25,10 @@ STEP 2: OPEN APPS SCRIPT
 
 -----------------------[ PASTE SCRIPT BELOW ]-----------------------
 function doPost(e) {
-  // Add CORS headers support for response
-  var headers = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type"
-  };
-
-  // Handle preflight OPTIONS request
-  if (e.postData === undefined) {
-    return ContentService.createTextOutput(JSON.stringify({ "result": "preflight" }))
-                         .setMimeType(ContentService.MimeType.JSON)
-                         .setHeaders(headers);
+  // Handle empty request or manual Apps Script editor execution safely
+  if (!e || e.postData === undefined) {
+    return ContentService.createTextOutput(JSON.stringify({ "result": "error", "error": "No post data found. Note: Do not run doPost directly from the Apps Script Run button." }))
+                         .setMimeType(ContentService.MimeType.JSON);
   }
 
   try {
@@ -66,12 +58,10 @@ function doPost(e) {
     MailApp.sendEmail("henriseagrofarm@gmail.com", emailSubject, emailBody);
     
     return ContentService.createTextOutput(JSON.stringify({ "result": "success" }))
-                         .setMimeType(ContentService.MimeType.JSON)
-                         .setHeaders(headers);
+                         .setMimeType(ContentService.MimeType.JSON);
   } catch (error) {
     return ContentService.createTextOutput(JSON.stringify({ "result": "error", "error": error.toString() }))
-                         .setMimeType(ContentService.MimeType.JSON)
-                         .setHeaders(headers);
+                         .setMimeType(ContentService.MimeType.JSON);
   }
 }
 

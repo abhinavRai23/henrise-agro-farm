@@ -20,6 +20,17 @@ export default function Footer() {
           <p className="footer-subtext">
             Proprietorship owned by Mo Ashraf. <br /> Azamgarh, Uttar Pradesh, India.
           </p>
+          <p className="footer-builtby">
+            Built by{' '}
+            <a
+              href="https://abhinavrai23.github.io/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer-builtby-link"
+            >
+              Abhinav Rai
+            </a>
+          </p>
         </div>
 
         <nav className="footer-nav" aria-label="Footer legal compliance links">

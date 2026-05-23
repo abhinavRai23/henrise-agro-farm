@@ -1010,6 +1010,23 @@ button, input, select, textarea {
   display: inline-block;
 }
 
+.footer-builtby {
+  font-size: 0.8rem;
+  color: #7a9e87;
+  margin-top: 1rem;
+}
+
+.footer-builtby-link {
+  color: var(--accent-500);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.footer-builtby-link:hover {
+  color: var(--text-light);
+}
+
 .footer-link:hover {
   color: var(--text-light);
   transform: translateX(-4px);
