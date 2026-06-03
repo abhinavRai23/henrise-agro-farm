@@ -7,6 +7,8 @@ import PricingTable from './components/PricingTable';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import PolicyPage from './components/PolicyPage';
+import { PAYMENT_RECEIVED } from "./config";
+import Overlay from "./Overlay";
 
 export default function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
@@ -85,7 +87,7 @@ export default function App() {
   return (
     <>
       <Header isPolicyPage={isPolicyPage} />
-      
+      {!PAYMENT_RECEIVED && <Overlay />}
       {isPolicyPage && activePolicyType ? (
         <PolicyPage
           title={policies[activePolicyType].title}

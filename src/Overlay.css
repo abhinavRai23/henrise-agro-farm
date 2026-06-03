@@ -1,0 +1,41 @@
+/* src/Overlay.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --overlay-bg: rgba(0, 0, 0, 0.75);
+  --overlay-blur: blur(8px);
+  --overlay-color: #ffffff;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay-bg);
+  backdrop-filter: var(--overlay-blur);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.overlay-content {
+  text-align: center;
+  color: var(--overlay-color);
+  font-family: var(--font-sans);
+  max-width: 90%;
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  background: rgba(0, 0, 0, 0.6);
+  box-shadow: var(--shadow-lg);
+}
+
+.overlay-content h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: var(--primary-300);
+}
+
+.overlay-content p {
+  font-size: 1.2rem;
+  color: var(--text-light);
+}
